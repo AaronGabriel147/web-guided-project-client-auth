@@ -45,6 +45,11 @@ function App() {
 
         <Switch>
           <PrivateRoute exact path="/protected" component={GasPrices} />
+          {/* 
+          <PrivateRoute exact path="/other" component={OtherPage} />
+          <PrivateRoute exact path="/momma" component={MommaPage} />
+          <PrivateRoute exact path="/bad" component={BadPage} /> 
+          */}
 
           <Route path="/login" component={Login} />
           <Route component={Login} />
