@@ -7,11 +7,8 @@ import axiosWithAuth from './utils/axiosWithAuth';
 
 function App() {
   const logout = () => {
-    axios.post('http://localhost:5000/api/logout', {
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
-    })
+    axiosWithAuth()
+    .post('/logout')
     .then(res => {
       localStorage.removeItem('token');
       window.location.href = "/login";
