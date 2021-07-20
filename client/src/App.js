@@ -11,6 +11,8 @@ function App() {
     .post('/logout')
     .then(res => {
       localStorage.removeItem('token');
+      localStorage.setItem('username');
+      localStorage.setItem('role');
       window.location.href = "/login";
     })
     .catch(err => {
