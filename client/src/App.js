@@ -48,6 +48,12 @@ function App() {
 
           <Route path="/login" component={Login} />
           <Route component={Login} />
+
+          {/* 
+          <Route path="/superLogin">
+            <Redirect to='/login'/>
+          </Route>
+           */}
         </Switch>
       </div>
     </Router>
