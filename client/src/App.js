@@ -10,8 +10,14 @@ function App() {
   const logout = () => {
     axios.post('http://localhost:5000/api/logout', {
       headers: {
-        
+        authorization: localStorage.getItem('token')
       }
+    })
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log(err);
     })
   };
 
