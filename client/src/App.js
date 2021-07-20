@@ -7,7 +7,7 @@ import axiosWithAuth from './utils/axiosWithAuth';
 
 const UserHeader = ()=> {
   return(<div>
-    <Link to="/protected">Protected Page</Link> <h3>Welcome {localStorage.getItem('username')}</h3>
+    <Link to="/protected">Protected Page</Link>
   </div>);
 }
 
