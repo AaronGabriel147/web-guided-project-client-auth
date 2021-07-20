@@ -26,7 +26,7 @@ app.post("/api/login", (req, res) => {
     req.loggedIn = true;
     res.status(200).json({
       username: "lambdaSchool",
-      role: "editor",
+      role: "admin",
       token: token
     });
   } else {

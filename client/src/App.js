@@ -1,25 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
 
 import Login from './components/Login';
 import GasPrices from './components/GasPrices';
-import axiosWithAuth from './utils/axiosWithAuth';
 
-const UserHeader = ()=> {
+import axiosWithAuth from './utils/axiosWithAuth';
+import axios from 'axios';
+
+const UserHeader = (props)=> {
   return(<div>
     <Link to="/protected">Protected Page</Link>
+    { props.userInfo.role == "admin" ? <div>Boss Person</div> : <div>Normal Dude</div>}
   </div>);
 }
 
 function App() {
+  const [userInfo, setUserInfo] = useState({
+    authenticated: false,
+    username: "",
+    role: ""
+  });
+
   const logout = () => {
     axiosWithAuth()
     .post('/logout')
     .then(res => {
       localStorage.removeItem('token');
-      localStorage.setItem('username');
-      localStorage.setItem('role');
+
+      setUserInfo({
+        authenticated: false,
+        username: "",
+        role: ""
+      });
+
       window.location.href = "/login";
     })
     .catch(err => {
@@ -27,38 +41,51 @@ function App() {
     })
   };
 
+  const login = (credentials) => {
+    axios
+      .post('http://localhost:5000/api/login', credentials)
+      .then(res => {
+        localStorage.setItem('token', res.data.token);
+
+        setUserInfo({
+          authenticated: true,
+          username: res.data.username,
+          role: res.data.role
+        });
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+  }
+
 
   return (
     <Router>
       <div className="App">
         <ul>
           <li>
-            <Link to="/login">Login</Link>
+            { !userInfo.authenticated && <Link to="/login">Login</Link> }
           </li>
           <li>
             <Link onClick={logout}>Logout</Link>
           </li>
           <li>
-            {localStorage.getItem('token') ? <UserHeader/> : <div></div>}
+            { userInfo.authenticated && <UserHeader userInfo={userInfo}/> }
           </li>
         </ul>
 
         <Switch>
           <PrivateRoute exact path="/protected" component={GasPrices} />
-          {/* 
-          <PrivateRoute exact path="/other" component={OtherPage} />
-          <PrivateRoute exact path="/momma" component={MommaPage} />
-          <PrivateRoute exact path="/bad" component={BadPage} /> 
-          */}
 
-          <Route path="/login" component={Login} />
+          <Route path="/login" render={(props)=> {
+            return <Login {...props} login={login}/>
+          }} />
+
+          {/* <Route path="/login">
+            <Login login={login}/>
+          </Route> */}
+
           <Route component={Login} />
-
-          {/* 
-          <Route path="/superLogin">
-            <Redirect to='/login'/>
-          </Route>
-           */}
         </Switch>
       </div>
     </Router>
