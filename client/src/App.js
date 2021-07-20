@@ -5,6 +5,12 @@ import Login from './components/Login';
 import GasPrices from './components/GasPrices';
 import axiosWithAuth from './utils/axiosWithAuth';
 
+const UserHeader = ()=> {
+  return(<div>
+    <Link to="/protected">Protected Page</Link> <h3>Welcome {localStorage.getItem('username')}</h3>
+  </div>);
+}
+
 function App() {
   const logout = () => {
     axiosWithAuth()
@@ -32,7 +38,7 @@ function App() {
             <Link onClick={logout}>Logout</Link>
           </li>
           <li>
-            {localStorage.getItem('token') ? <div><Link to="/protected">Protected Page</Link> <h3>Welcome {localStorage.getItem('username')}</h3></div> : <div></div>}
+            {localStorage.getItem('token') ? <UserHeader/> : <div></div>}
           </li>
         </ul>
 
