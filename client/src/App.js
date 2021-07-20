@@ -8,7 +8,11 @@ import axios from 'axios';
 
 function App() {
   const logout = () => {
-    
+    axios.post('http://localhost:5000/api/logout', {
+      headers: {
+        
+      }
+    })
   };
 
 
