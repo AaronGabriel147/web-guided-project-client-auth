@@ -19,7 +19,9 @@ class GasPrices extends React.Component {
       }
     })
       .then(res=>{
-        console.log(res);
+        this.setState({
+          gasPrices: res.data.data
+        });
       })
       .catch(err=>{
         console.log(err);
