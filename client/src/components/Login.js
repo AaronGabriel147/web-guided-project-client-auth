@@ -27,6 +27,7 @@ class Login extends React.Component {
       .catch(err=>{
         console.log(err);
       })
+      
     //1. setup an axios request for our login endpoint
     //2. add our credentials into the request body.
     //3. If successful, add in the token into localStorage.
