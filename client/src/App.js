@@ -32,7 +32,7 @@ function App() {
             <Link onClick={logout}>Logout</Link>
           </li>
           <li>
-            {localStorage.getItem('token') ? <div><Link to="/protected">Protected Page</Link></div> : <div></div>}
+            {localStorage.getItem('token') ? <div><Link to="/protected">Protected Page</Link> <h3>Welcome {localStorage.getItem('username')}</h3></div> : <div></div>}
           </li>
         </ul>
 
