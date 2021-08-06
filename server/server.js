@@ -20,6 +20,7 @@ function authenticator(req, res, next) {
   }
 }
 
+
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
   if (username === "lambda" && password === "school") {
@@ -35,6 +36,7 @@ app.post("/api/login", (req, res) => {
       .json({ error: "Username or Password incorrect. Please see Readme" });
   }
 });
+
 
 app.post("/api/logout", (req, res) => {
   //remove token from database

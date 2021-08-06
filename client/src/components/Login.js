@@ -20,7 +20,23 @@ class Login extends React.Component {
 
   login = e => {
     e.preventDefault();
+    // console.log("LOGIN~!!!!!!"); // MUST CLICK LOG IN ON THE PAGE*
+    axios
+      .post("http://localhost:5000/api/login", this.state.credentials)
+      .then(res => {
+        console.log(this.props)
+        localStorage.setItem('token', res.data.token)
+        this.props.history.push('/protected');
+      })
+      .catch((err) =>  console.log(err))
   };
+
+// use axios to make post request
+// if successful, log token
+// if req is error, log error
+
+
+
 
   render() {
     return (
