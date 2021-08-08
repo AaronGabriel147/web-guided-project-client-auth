@@ -1,18 +1,60 @@
 import React from 'react';
 import moment from 'moment';
 import Loader from 'react-loader-spinner';
+// import Axios from 'axios'; DONT NEED NOW THAT WE HAVE AXIOS WITH AUTH
+
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 class GasPrices extends React.Component {
   state = {
-    gasPrices: []
+    gasPrices: [] // all data goes in here.
   };
 
+  // I still do not know what all this mount stuff is.
+  // Intructor said when this first mounts, we want to get our data. 
+  // What exactly is this doing?
   componentDidMount() {
     this.getData();
+  };
+
+  // Use get
+  // This function simply grabs the axios data
+  // the get call has 2 parameters. one is the url and the other is an object which contains a headers object.
+  // res is now the entire piece of data. data.data.[0].keys
+  // console.log("🚀 GasPrices.js ~ GasPrices ", res) //  an array of objects
+  // getData = () => {
+    //   // Axios
+    //   .get('http://localhost:5000/api/data', {
+      //       headers: {
+        //         authorization: localStorage.getItem('token')
+        //       }
+        //     }) 
+        //     .then(res => {
+          //       this.setState({
+            //         gasPrices: res.data.data
+            //         })
+          
+            //       })
+  //     .catch(err => console.log('ERR!!! in GasPrices.js: getData()', err.response)) // err.response gives us a lot more info on the error. Why?
+  // };
+  
+  
+  getData = () => {
+    axiosWithAuth()
+    .get('/data')
+    .then(res => {
+      console.log('GasPrices.js / getData =', res)
+      this.setState({
+        gasPrices: res.data.data
+      })
+    })
+      .catch(err => console.log('Error is GasPrices.js: getData: ', err))
   }
 
-  getData = () => {};
 
+
+
+  // ?
   formatData = () => {
     const formattedData = [];
     this.state.gasPrices.forEach((price, index, arr) => {
@@ -56,7 +98,7 @@ class GasPrices extends React.Component {
           <div className="gas-wrapper">
             <div className="columns">
               <div className="months">
-                <div className="year">2006</div>
+                <div className="year">999999999</div>
                 <div className="year">2007</div>
                 <div className="year">2008</div>
                 <div className="year">2009</div>

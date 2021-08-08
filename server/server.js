@@ -11,21 +11,32 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('dev'));
 
+// console.log('LogIn: this.props =  ', this.props) shows us what is available through props.
+
+// Before we send off our data, the first thing we do is go through the authenticator middleware. 
+// What authenticator does is check something inside of something called headers.
+// Inside of headers there is an authorization item in the object.
+// We are checking to see is the authorization item matches our token.
+// If it does then next() is ran, if not we get the 403 error.
+
+
 function authenticator(req, res, next) {
-  const { authorization } = req.headers;
+  const { authorization } = req.headers; // I do not get request headers...Nothing .log....
   if (authorization === token) {
+    console.log("🚀 ~ file: server.js ~ line 27 ~ authenticator ~ authorization", authorization)
+    console.log('server.js: ', headers, req, res) // so far no output is happening...
     next();
   } else {
     res.status(403).json({ error: "User must be logged in to do that." });
   }
 }
 
-
+// Login
 app.post("/api/login", (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body; // req body UNIT 4 stuff
   if (username === "lambda" && password === "school") {
     req.loggedIn = true;
-    res.status(200).json({
+    res.status(200).json({ // 200 is good.
       username: "lambdaSchool",
       role: "editor",
       token: token
@@ -37,15 +48,17 @@ app.post("/api/login", (req, res) => {
   }
 });
 
-
+// log out
 app.post("/api/logout", (req, res) => {
-  //remove token from database
+  // remove token from database
+  // how does this work?
   res.status(200).json({
     payload: token
   });
 });
 
-app.get("/api/data", authenticator, (req, res) => {
+// getData in the GasPrices.js file will use this.
+app.get("/api/data", authenticator, (req, res) => { // what is authenticator and req? Middleware? per Longmire
   setTimeout(() => {
     res.send(data);
   }, 1000);

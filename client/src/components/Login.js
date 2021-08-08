@@ -1,5 +1,7 @@
 import React from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 class Login extends React.Component {
   state = {
@@ -18,17 +20,27 @@ class Login extends React.Component {
     });
   };
 
-  login = e => {
+  /* SEE IF THIS STILL WORKS AFTEWR I CHANGED IT TO REQ */
+  
+  // get is getting something
+  // post is when you give something to the server
+  // this.state.credentials is grabbing the handleChanger up above.
+  login = (e) => {
     e.preventDefault();
-    // console.log("LOGIN~!!!!!!"); // MUST CLICK LOG IN ON THE PAGE*
-    axios
-      .post("http://localhost:5000/api/login", this.state.credentials)
-      .then(res => {
-        console.log(this.props)
-        localStorage.setItem('token', res.data.token)
+    axiosWithAuth()
+      .post("/login", this.state.credentials) // once connected to the server you are gicing then the state.
+      .then(req => {
+        // setItem is saving a key value pair into localStorage. 
+        // res is what is returned by the server.
+        // res.data.token is accessing a specific piece of data that was returned from the server. Most notably the token!
+        localStorage.setItem('token', req.data.token)
+        console.log("Login.js: login handler", req)
+        // history is avail through <Route>. 
+        // push() is a function that allows us to push a new Route into our browser. It saves the base URL, and adds onto the path.
+        // So we are adding /protected to the pre-existing URL.
         this.props.history.push('/protected');
       })
-      .catch((err) =>  console.log(err))
+      .catch((err) =>  console.log("We do not recognize these credentials. ", err));
   };
 
 // use axios to make post request
@@ -36,9 +48,14 @@ class Login extends React.Component {
 // if req is error, log error
 
 
-
+// The data that is .logged, looks like this:
+// data:
+// role: "editor"
+// token: "ahuBHejkJJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA07i73Gebhu98"
+// username: "lambdaSchool"
 
   render() {
+    // console.log('render of Login.js ', this.state.credentials)
     return (
       <div>
         <form onSubmit={this.login}>
